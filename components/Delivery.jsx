@@ -1,12 +1,25 @@
-var React = require('react');
+var React = require('react'),
+    RoomThumbnail = require('./RoomThumbnail.jsx');
+
+require('../styles/delivery.less');
 
 /**
- * TODO
+ * Main app container
  */
 module.exports = React.createClass({
   render: function() {
-    return <div>
-      Wololos
+    return <div className='delivery'>
+      <div className='rooms'>
+        <RoomThumbnail/>
+        <RoomThumbnail/>
+        <RoomThumbnail/>
+      </div>
+      <div className='chat'>
+        Chat
+      </div>
+      <div className='user-list'>
+        User-list
+      </div>
     </div>;
   }
 });
