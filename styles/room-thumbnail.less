@@ -1,5 +1,38 @@
+@import "./constants/colors.less";
+
+@thumbnail-height: 150px;
+@logo-size: 100px;
+
 .room-thumbnail {
-  height: 150px;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  height: @thumbnail-height;
   width: auto;
-  border: 1px solid red;
+  border: 1px solid red; // Debug
+  background: @white;
+  color: @normal-text-color;
+  font-family: Impact, Charcoal, sans-serif;
+
+}
+.room-thumbnail-logo {
+  width: @logo-size;
+  height: @logo-size;
+  border-radius: 150px;
+  box-shadow: 0 0 8px rgba(0, 0, 0, .8);
+}
+
+.room-thumbnail-info {
+
+  .room-thumbnail-title,
+  .room-thumbnail-owner,
+  .room-thumbnail-lock-hour,
+  .room-thumbnail-join-button {
+    text-align: center;
+    display: block;
+  }
+
+  .room-thumbnail-join-button {
+    border: 1px solid blue;
+  }
 }
