@@ -1,7 +1,7 @@
 @import "./constants/colors.less";
 
 @thumbnail-height: 150px;
-@logo-size: 100px;
+@logo-size: 120px;
 
 .room-thumbnail {
   display: flex;
@@ -9,12 +9,16 @@
   align-items: center;
   height: @thumbnail-height;
   width: auto;
-  border: 1px solid red; // Debug
+  // border: 1px solid red; // Debug
   background: @white;
   color: @normal-text-color;
   font-family: Impact, Charcoal, sans-serif;
-
 }
+
+.oddBackground {
+  background: @gray-background;
+}
+
 .room-thumbnail-logo {
   width: @logo-size;
   height: @logo-size;

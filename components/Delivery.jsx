@@ -1,25 +1,23 @@
 var React = require('react'),
-    RoomThumbnail = require('./RoomThumbnail.jsx'),
     ComponentTree = require('react-component-tree'),
+    RoomsList = require('./RoomsList.jsx'),
     _ = require('lodash');
 
 require('../styles/delivery.less');
 
 /**
  * Main app container
+ * Ce primeste asta prin props o sa faca prin get cred.
  */
 module.exports = React.createClass({
 
   mixins: [ComponentTree.Mixin],
 
   children: {
-    roomThumbnail: function(roomConfig) {
+    roomsList: function() {
       return {
-        component: RoomThumbnail,
-        title: roomConfig.title,
-        image: roomConfig.image,
-        owner: roomConfig.owner,
-        lock_hour: roomConfig.lock_hour
+        component: RoomsList,
+        rooms: this._getRooms()
       };
     }
   },
@@ -28,7 +26,7 @@ module.exports = React.createClass({
     return <div className='delivery'>
 
       <div className='rooms'>
-        {this._renderRooms()}
+        {this.loadChild('roomsList')}
       </div>
       <div className='chat'>
         Chat
@@ -39,9 +37,7 @@ module.exports = React.createClass({
     </div>;
   },
 
-  _renderRooms: function() {
-    return _.map(this.props.rooms, function(roomConfig) {
-      return this.loadChild('roomThumbnail', roomConfig);
-    }, this);
+  _getRooms: function() {
+    return this.props.rooms;
   }
 });

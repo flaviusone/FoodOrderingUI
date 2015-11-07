@@ -1,4 +1,5 @@
-var React = require('react');
+var React = require('react'),
+    classSet = require('classnames');
 
 require('../styles/room-thumbnail.less');
 
@@ -8,11 +9,16 @@ require('../styles/room-thumbnail.less');
  * @param {String} image Food company logo
  * @param {String} owner Room owner
  * @param {String} lock_hour Room lock hour
+ * @param {Boolean} oddBackground Dictates thumbnail color
  */
 module.exports = React.createClass({
 
   render: function() {
-    return <div className="room-thumbnail">
+    var classes = classSet({
+      'room-thumbnail': true,
+      'oddBackground': this.props.oddBackground
+    });
+    return <div className={classes}>
       {this.props.image ? this._renderLogo() : null}
       {this._renderInfo()}
     </div>;
