@@ -24,9 +24,22 @@ module.exports = React.createClass({
     }
   },
 
+  componentWillUpdate: function() {
+    var node = this.getDOMNode();
+    this.shouldScrollBottom = node.scrollTop + node.offsetHeight ===
+        node.scrollHeight;
+  },
+
+  componentDidUpdate: function() {
+    if (this.shouldScrollBottom) {
+      var node = this.getDOMNode();
+      node.scrollTop = node.scrollHeight;
+    }
+  },
+
   render: function() {
     return <div className="message-list">
-      {this._renderMessages()}
+      {this.props.messages.length > 0 ? this._renderMessages() : null}
     </div>;
   },
 
