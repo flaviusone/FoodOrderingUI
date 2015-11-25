@@ -1,6 +1,7 @@
 var React = require('react'),
     ComponentTree = require('react-component-tree'),
     RoomsList = require('./RoomsList.jsx'),
+    UserList = require('./UserList.jsx'),
     Chat = require('./Chat.jsx'),
     _ = require('lodash');
 
@@ -27,6 +28,13 @@ module.exports = React.createClass({
         component: Chat,
         roomIndex: 42
       };
+    },
+
+    userList: function() {
+      return {
+        component: UserList,
+        users: this._getUsers()
+      };
     }
   },
 
@@ -40,12 +48,16 @@ module.exports = React.createClass({
         {this.loadChild('chat')}
       </div>
       <div className='user-list'>
-        User-list
+        {this.loadChild('userList')}
       </div>
     </div>;
   },
 
   _getRooms: function() {
     return this.props.rooms;
+  },
+
+  _getUsers: function() {
+    return this.props.users;
   }
 });

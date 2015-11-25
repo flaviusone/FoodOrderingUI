@@ -1,8 +1,7 @@
 var React = require('react'),
     MessageList = require('./MessageList.jsx'),
     InputForm = require('./InputForm.jsx'),
-    ComponentTree = require('react-component-tree'),
-    _ = require('lodash');
+    ComponentTree = require('react-component-tree');
 
 require('../styles/chat.less');
 

@@ -1,0 +1,31 @@
+@import "./constants/colors.less";
+
+@thumbnail-height: 100px;
+@logo-size: 80px;
+
+.user-thumbnail {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  height: @thumbnail-height;
+  width: auto;
+  background: @white;
+  color: @normal-text-color;
+  font-family: Impact, Charcoal, sans-serif;
+}
+
+.user-thumbnail-avatar {
+  width: @logo-size;
+  height: @logo-size;
+  border-radius: @logo-size;
+  box-shadow: 0 0 8px rgba(0, 0, 0, .8);
+}
+
+.user-thumbnail-info {
+
+  .user-thumbnail-name,
+  .user-thumbnail-order {
+    text-align: center;
+    display: block;
+  }
+}
