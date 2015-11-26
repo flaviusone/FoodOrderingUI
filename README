@@ -12,17 +12,22 @@ Sistem colaborativ pentru comandat mancare - Etapa a doua
 Scriptul a fost realizat in NodeJS si acceseaza paginile FoodPanda dupa care parseaza structura acestora. Pentru a realiza asta, am folosit modulul "cheerio" (https://github.com/cheeriojs/cheerio).
 
 Pasi testare:
-  -
-  -
-
+  - npm install
+  - npm run getRestaurants genereaza JSON cu URL-uri catre paginile cu meniuri ale restaurantelor
+  - npm run generateMenu genereaza JSON cu date meniu restaurante
 
 2) In ceea ce priveste serverul, acesta e realizat tot in NodeJS si stocheaza datele intr-o baza de date mongoDB. Baza de date este constituita din trei modele descriind utilizatorii, camerele de discutie si restaurantele existente. In momentul de fata exista functiile prin intermediul carora serverul manipuleaza baza de date. Am realizat acest lucru folosind modulul "mongoose" (http://mongoosejs.com). Pentru implementa serverul am folosit framework-ul "express" (http://expressjs.com). De asemenea serverul are inregistrate cateva rute de baza care vor fi folosite pentru interactiunea cu clientul WEB.
+
+Pasi testare:
+  - npm install
+  - npm run start
 
 3) Clientul este realizat folosind React (https://facebook.github.io/react) si este structurat sub forma unor componente de sine statatoare (folderul components) ce folosesc LESS pentru styling. In momentul de fata avem o interfata minimala ce respecta designurile initiale (lista rooms, lista useri, chat central).
 
 Pentru dezvoltare s-au folost o serie de tooluri open source cum ar fi Cosmos (https://github.com/skidding/cosmos) si Webpack. Cosmos permite randarea componentelor intr-un mediu izolat prin itermediul unor fixturi (folderul fixtures) ce vor descrie starea acestora. Cosmos de asemenea foloseste Webpack, tool folosit si de noi pentru a bunde-ui toate fisierele JS/CSS in unul singur bundle.js/styles.css.
 
 Pasi testare:
+  - npm install
   - npm run build - creaza bundle.js/styles.css (vor fi incarcate de server)
   - npm run start - deschide un server webpack de dezvoltare la http://localhost:8080/
   - npm run playground - incarca Cosmos ce poate fi accesat la http://localhost:8989/
