@@ -54,10 +54,18 @@ module.exports = React.createClass({
   },
 
   _getRooms: function() {
-    return this.props.rooms;
+    var roomFixture = require('../fixtures/RoomThumbnail/base.js');
+
+    return _.times(4, function() {
+      return roomFixture;
+    });
   },
 
   _getUsers: function() {
-    return this.props.users;
+    var userFixture = require('../fixtures/UserThumbnail/base.js');
+
+    return _.times(4, function() {
+      return userFixture;
+    });
   }
 });
