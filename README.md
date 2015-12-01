@@ -1,3 +1,5 @@
+##File structure
+
 ```
   - assets - images (png/jpg/gif)
   - db - holds db.js, the database config file
