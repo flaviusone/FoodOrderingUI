@@ -54,7 +54,7 @@ module.exports = React.createClass({
   },
 
   _getRooms: function() {
-    var roomFixture = require('../fixtures/RoomThumbnail/base.js');
+    var roomFixture = require('../../fixtures/RoomThumbnail/base.js');
 
     return _.times(4, function() {
       return roomFixture;
@@ -62,7 +62,7 @@ module.exports = React.createClass({
   },
 
   _getUsers: function() {
-    var userFixture = require('../fixtures/UserThumbnail/base.js');
+    var userFixture = require('../../fixtures/UserThumbnail/base.js');
 
     return _.times(4, function() {
       return userFixture;

@@ -2,7 +2,6 @@
   "root": true,
 
   "plugins": [
-    "react",
   ],
 
   "ecmaFeatures": {
@@ -18,9 +17,6 @@
   },
 
   "rules": {
-    // eslint-plugin-react
-    "react/jsx-uses-vars": 1,
-
     // Possible Errors
     "comma-dangle":    [2, "never"],
     "no-cond-assign":  [2, "always"],
