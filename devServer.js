@@ -6,6 +6,9 @@ var path = require('path'),
     http = require('http'),
     debug = require('debug')('food-server:server');
 
+var CHAT_EVENT = 'chat';
+
+
 var ports = {
   dev: normalizePort(process.env.PORT || 3000),
   playground: 8989
@@ -36,6 +39,10 @@ app.set('port', port);
  * Create HTTP server.
  */
 var server = http.createServer(app);
+/**
+* Create socket.
+*/
+var io = require('socket.io')(server);
 
 /**
  * Listen on provided port, on all network interfaces.
@@ -43,6 +50,21 @@ var server = http.createServer(app);
 server.listen(port);
 server.on('error', onError);
 server.on('listening', onListening);
+
+io.on('connection', function (socket){
+  debug('connected');
+  socket.on (CHAT_EVENT, function (msg){
+    debug (msg);
+    io.emit (CHAT_EVENT. msg);
+  });
+});
+
+io.on('connection', function(socket){
+  debug('a user connected');
+  socket.on('disconnect', function(){
+    debug('user disconnected');
+  });
+});
 
 
 /* YOLO functions below */
