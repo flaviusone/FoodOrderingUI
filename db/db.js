@@ -19,6 +19,7 @@ var roomSchema = mongoose.Schema ({
 	users: [mongoose.Schema.Types.ObjectId],
 	chat: [{
 		userId: mongoose.Schema.Types.ObjectId,
+		userName: String,
 		message: String
 	}]
 });
@@ -209,7 +210,7 @@ function getUserByUsername (username, cb)
 
 function getUserNameById (userId, cb)
 {
-	User.findOneById (userId, function (err, doc){
+	User.findOne ({_id:userId}, function (err, doc){
 		if (err)
 			debug ('Could not get user name by id '+err);
 		else if (!doc)
@@ -245,9 +246,11 @@ function getUsersByRoomId (roomId, cb)
 	});
 }
 
-function addChatMessage (roomId, userId, message, cb)
+function addChatMessage (roomId, userId, userName, message, cb)
 {
-	Room.findByIdAndUpdate (roomId, {$push: {chat: {userId: userId, message: message}}}, function (err){
+	debug (roomId);
+	Room.findByIdAndUpdate (roomId, {$push: {chat: {userId: userId, message: message, userName:userName}}},
+	 function (err){
 		if (err)
 			debug ('Could not add chat message '+err);
 		cb (err);

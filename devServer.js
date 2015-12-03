@@ -65,11 +65,11 @@ server.on('listening', onListening);
 io.on('connection', function (socket){
   debug('connected');
   socket.on (CHAT_EVENT, function (msg){
-    socketHandler.chat (msg, function (err){
+    socketHandler.chat (msg, function (err, newMessage){
       if (err)
         debug ('Could not handle chat message');
       else
-        io.emit (CHAT_EVENT, msg);
+        io.emit (CHAT_EVENT, newMessage);
     });
   });
    socket.on('disconnect', function(){
