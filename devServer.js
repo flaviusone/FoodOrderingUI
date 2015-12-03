@@ -1,10 +1,22 @@
+'use strict'
+
 var path = require('path'),
     express = require('express'),
     webpack = require('webpack'),
     argv = require('yargs').argv,
     routes = require('./routes/routes.js'),
     http = require('http'),
-    debug = require('debug')('food-server:server');
+    debug = require('debug')('food-server:server'),
+    socketHandler = require ('./socket/socket.js'),
+    bodyParser = require('body-parser');
+
+/**
+*  Connect to database.
+*/
+require ('./db/db.js')();
+
+var CHAT_EVENT = 'chat';
+
 
 var ports = {
   dev: normalizePort(process.env.PORT || 3000),
@@ -25,10 +37,12 @@ app.use(require('webpack-dev-middleware')(compiler, {
 
 app.use(require('webpack-hot-middleware')(compiler));
 
-app.get('/', function(req, res) {
-  res.sendFile(path.join(__dirname, 'index.html'));
-});
+// app.get('/', function(req, res) {
+//   res.sendFile(path.join(__dirname, 'index.html'));
+// });
 
+app.use(express.static(__dirname));
+app.use(bodyParser.json());
 app.use('/', routes);
 app.set('port', port);
 
@@ -36,6 +50,10 @@ app.set('port', port);
  * Create HTTP server.
  */
 var server = http.createServer(app);
+/**
+* Create socket.
+*/
+var io = require('socket.io')(server);
 
 /**
  * Listen on provided port, on all network interfaces.
@@ -43,6 +61,21 @@ var server = http.createServer(app);
 server.listen(port);
 server.on('error', onError);
 server.on('listening', onListening);
+
+io.on('connection', function (socket){
+  debug('connected');
+  socket.on (CHAT_EVENT, function (msg){
+    socketHandler.chat (msg, function (err, newMessage){
+      if (err)
+        debug ('Could not handle chat message');
+      else
+        io.emit (CHAT_EVENT, newMessage);
+    });
+  });
+   socket.on('disconnect', function(){
+    debug('user disconnected');
+  });
+});
 
 
 /* YOLO functions below */

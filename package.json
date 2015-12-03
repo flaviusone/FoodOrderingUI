@@ -44,10 +44,11 @@
     "react-bootstrap": "^0.26.4",
     "react-data-fetch": "^0.3.2",
     "react-modal": "^0.5.0",
-    "react-select": "^0.6.12"
+    "react-select": "^0.6.12",
+    "socket.io": "^1.3.7"
   },
   "scripts": {
-    "start": "node devServer.js",
+    "start": "DEBUG=food-server:* node devServer.js",
     "build": "webpack --config webpack.config.dev.js --progress --colors",
     "playground": "node devServer.js --env playground",
     "lint": "eslint --ext .js --ext .jsx --format './node_modules/eslint-friendly-formatter' ."
