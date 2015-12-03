@@ -27,6 +27,7 @@ router.get ('/get_rooms', function(req, res) {
 });
 
 router.post ('/join_room', function(req, res) {
+  console.log(req.body);
   db.addUserToRoom (req.body.userId, req.body.roomId, function(err) {
     if (err) {
       res.status (200).send ({status: 'error'});
@@ -39,7 +40,14 @@ router.post ('/join_room', function(req, res) {
             if (err) {
               res.status (200).send ({status: 'error'});
             } else {
-              res.status (200).send ({status: 'done', restaurant: restaurant});
+              db.getUsersByRoomId (req.body.roomId, function (err, users){
+                if (err)
+                  res.status (200).send ({status: 'error'});
+                else
+                {
+                  res.status (200).send ({status: 'done', restaurant: restaurant, users: users});
+                }
+              });
             }
           });
         }
@@ -65,6 +73,16 @@ router.post ('/submit_order', function(req, res) {
     } else {
       res.status (200).send ({status: 'done'});
     }
+  });
+});
+
+router.post ('/add_room', function(req, res){
+  db.addRoom (req.body.userId, req.body.hourLimit, req.body.restaurantId,
+                function (err){
+    if (err)
+      res.status (200).send ({status: 'error'});
+    else
+      res.status(200).send ({status: 'done'});
   });
 });
 

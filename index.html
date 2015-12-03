@@ -13,5 +13,15 @@
 <body>
   <div id="root"></div>
   <script src="/static/bundle.js"></script>
+  <script src="https://cdn.socket.io/socket.io-1.2.0.js"></script>
+  <script>
+  var socket = io();
+  socket.emit('chat', {roomId:"56601ca7e4b0ed465284dcab", 
+                        userId:"5656dd50f4ccabbb27a5a00d", 
+                        message:"bla bla"});
+  socket.on('chat', function(msg){
+      console.log(msg);
+  });
+</script>
 </body>
 </html>

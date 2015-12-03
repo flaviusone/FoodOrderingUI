@@ -4,9 +4,15 @@ var mongoose = require ('mongoose');
 var debug = require ('debug') ('food-server:db');
 
 var URL = 'mongodb://food:hungry@ds053874.mongolab.com:53874/food-order';
+//ioana 
+//f00d0rder
 
 var roomSchema = mongoose.Schema ({
 	name: String,
+	owner: {
+		_id: mongoose.Schema.Types.ObjectId,
+		name: String
+	},
 	_id: {type: mongoose.Schema.Types.ObjectId, default: function () { return new mongoose.Types.ObjectId()}},
 	hourLimit: Date, 
 	restaurantId: mongoose.Schema.Types.ObjectId,
@@ -47,24 +53,31 @@ var Room = mongoose.model ('Room', roomSchema);
 var Restaurant = mongoose.model ('Restaurant', restaurantSchema);
 var User = mongoose.model ('User', userSchema);
 
-function addRoom (userId, name, hourLimit, restaurantId, cb)
+function addRoom (userId, hourLimit, restaurantId, cb)
 {
-	
-	var room = new Room ({
-		name: name,
-		restaurantId: restaurantId,
-		users: [userId],
-		chat: []
+	getUserNameById (userId, function (err, userName){
+		if (err)
+			debug ('Could not add room '+err);
+		else
+		{
+			var room = new Room ({
+			owner: {_id: userId, name: userName},
+			name: name,
+			restaurantId: restaurantId,
+			users: [userId],
+			chat: []
+			});
+
+			if (hourLimit)
+			{
+				room.hourLimit = hourLimit;
+			}
+
+			room.save (function (err){
+				cb (err);
+			});	
+		}
 	});
-
-	if (hourLimit)
-	{
-		room.hourLimit = hourLimit;
-	}
-
-	room.save (function (err){
-		cb (err);
-	});	
 }
 
 function addRestaurant (restaurant, cb)
@@ -194,6 +207,21 @@ function getUserByUsername (username, cb)
 	});
 }
 
+function getUserNameById (userId, cb)
+{
+	User.findOneById (userId, function (err, doc){
+		if (err)
+			debug ('Could not get user name by id '+err);
+		else if (!doc)
+		{
+			debug ('User does not exits');
+			cb (err, null);
+		}
+		else
+			cb (err, doc.name);
+	});
+}
+
 function getAllRooms (cb)
 {
 	Room.find ({}, function (err, docs){
@@ -221,7 +249,7 @@ function addChatMessage (roomId, userId, message, cb)
 {
 	Room.findByIdAndUpdate (roomId, {$push: {chat: {userId: userId, message: message}}}, function (err){
 		if (err)
-			debug ('Could not add chat message');
+			debug ('Could not add chat message '+err);
 		cb (err);
 	});
 }
@@ -253,3 +281,4 @@ module.exports.getAllRooms = getAllRooms;
 module.exports.getRestaurantById = getRestaurantById;
 module.exports.getRoomById = getRoomById;
 module.exports.getUsersByRoomId = getUsersByRoomId;
+module.exports.getUserNameById = getUserNameById;

@@ -7,7 +7,8 @@ var path = require('path'),
     routes = require('./routes/routes.js'),
     http = require('http'),
     debug = require('debug')('food-server:server'),
-    socketHandler = require ('./socket/socket.js');
+    socketHandler = require ('./socket/socket.js'),
+    bodyParser = require('body-parser');
 
 /**
 *  Connect to database.
@@ -41,7 +42,7 @@ app.use(require('webpack-hot-middleware')(compiler));
 // });
 
 app.use(express.static(__dirname));
-
+app.use(bodyParser.json());
 app.use('/', routes);
 app.set('port', port);
 
