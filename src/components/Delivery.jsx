@@ -1,7 +1,9 @@
 var React = require('react'),
     ComponentTree = require('react-component-tree'),
     RoomsList = require('./RoomsList.jsx'),
+    DataFetch = require('../mixins/data-fetch.js'),
     UserList = require('./UserList.jsx'),
+    LoginModal = require('./LoginModal.jsx'),
     Chat = require('./Chat.jsx'),
     _ = require('lodash');
 
@@ -13,12 +15,13 @@ require('../styles/delivery.less');
  */
 module.exports = React.createClass({
 
-  mixins: [ComponentTree.Mixin],
+  mixins: [DataFetch, ComponentTree.Mixin],
 
   children: {
     roomsList: function() {
       return {
         component: RoomsList,
+        dataUrl: '/get_rooms',
         rooms: this._getRooms()
       };
     },
@@ -35,12 +38,31 @@ module.exports = React.createClass({
         component: UserList,
         users: this._getUsers()
       };
+    },
+
+    loginModal: function() {
+      return {
+        component: LoginModal,
+        submitCallback: this.onLoginCallback
+      };
     }
   },
 
-  render: function() {
-    return <div className='delivery'>
+  getDefaultProps: function() {
+    return {dataUrl: '/get_rooms'};
+  },
 
+  getInitialState: function() {
+    return {renderModal: true};
+  },
+
+  render: function() {
+    return this.state.renderModal ? this.loadChild('loginModal')
+                                  : this._renderAppComponents();
+  },
+
+  _renderAppComponents: function() {
+    return <div className='delivery'>
       <div className='rooms'>
         {this.loadChild('roomsList')}
       </div>
@@ -53,12 +75,18 @@ module.exports = React.createClass({
     </div>;
   },
 
-  _getRooms: function() {
-    var roomFixture = require('../../fixtures/RoomThumbnail/base.js');
+  onLoginCallback: function(userName, userID) {
+    // set state cu userID si remove modal
+    this.setState({renderModal: false});
+    return;
+  },
 
-    return _.times(4, function() {
-      return roomFixture;
-    });
+  _getRooms: function() {
+    if (this.state.data) {
+      return this.state.data.rooms;
+    } else {
+      return null;
+    }
   },
 
   _getUsers: function() {

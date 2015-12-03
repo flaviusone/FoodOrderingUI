@@ -34,14 +34,17 @@
     "yargs": "^3.30.0"
   },
   "dependencies": {
-    "lodash": "^3.10.1",
-    "react": "^0.13.3",
-    "react-bootstrap": "^0.26.4",
-    "react-select": "^0.6.12",
     "body-parser": "~1.13.2",
     "debug": "~2.2.0",
     "express": "~4.13.1",
-    "mongoose": "^4.2.8"
+    "jquery": "^2.1.4",
+    "lodash": "^3.10.1",
+    "mongoose": "^4.2.8",
+    "react": "^0.13.3",
+    "react-bootstrap": "^0.26.4",
+    "react-data-fetch": "^0.3.2",
+    "react-modal": "^0.5.0",
+    "react-select": "^0.6.12"
   },
   "scripts": {
     "start": "node devServer.js",

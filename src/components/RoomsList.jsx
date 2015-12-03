@@ -18,10 +18,10 @@ module.exports = React.createClass({
     roomThumbnail: function(roomConfig, index) {
       return {
         component: RoomThumbnail,
-        title: roomConfig.title,
-        image: roomConfig.image,
-        owner: roomConfig.owner,
-        lock_hour: roomConfig.lock_hour,
+        title: roomConfig.name,
+        image: require('../../assets/img/jerrys_logo.png'),
+        owner: '',
+        lock_hour: '',
         oddBackground: !!(index % 2),
         key: index
       };
