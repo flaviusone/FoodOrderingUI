@@ -1,4 +1,4 @@
-"use strict"
+'use strict'
 
 var mongoose = require ('mongoose');
 var debug = require ('debug') ('food-server:db');
@@ -10,7 +10,11 @@ var roomSchema = mongoose.Schema ({
 	_id: {type: mongoose.Schema.Types.ObjectId, default: function () { return new mongoose.Types.ObjectId()}},
 	hourLimit: Date, 
 	restaurantId: mongoose.Schema.Types.ObjectId,
-	users: [mongoose.Schema.Types.ObjectId]
+	users: [mongoose.Schema.Types.ObjectId],
+	chat: [{
+		userId: mongoose.Schema.Types.ObjectId,
+		message: String
+	}]
 });
 
 var restaurantSchema = mongoose.Schema ({
@@ -49,7 +53,8 @@ function addRoom (userId, name, hourLimit, restaurantId, cb)
 	var room = new Room ({
 		name: name,
 		restaurantId: restaurantId,
-		users: [userId]
+		users: [userId],
+		chat: []
 	});
 
 	if (hourLimit)
@@ -212,6 +217,15 @@ function getUsersByRoomId (roomId, cb)
 	});
 }
 
+function addChatMessage (roomId, userId, message, cb)
+{
+	Room.findByIdAndUpdate (roomId, {$push: {chat: {userId: userId, message: message}}}, function (err){
+		if (err)
+			debug ('Could not add chat message');
+		cb (err);
+	});
+}
+
 module.exports = function ()
 //function initDb ()
 {
@@ -224,6 +238,7 @@ module.exports = function ()
 		 });
 }
 
+module.exports.addChatMessage = addChatMessage;
 module.exports.addRoom = addRoom;
 module.exports.addRestaurant = addRestaurant;
 module.exports.addUser = addUser;

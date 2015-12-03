@@ -1,10 +1,18 @@
+'use strict'
+
 var path = require('path'),
     express = require('express'),
     webpack = require('webpack'),
     argv = require('yargs').argv,
     routes = require('./routes/routes.js'),
     http = require('http'),
-    debug = require('debug')('food-server:server');
+    debug = require('debug')('food-server:server'),
+    socketHandler = require ('./socket/socket.js');
+
+/**
+*  Connect to database.
+*/
+require ('./db/db.js')();
 
 var CHAT_EVENT = 'chat';
 
@@ -28,9 +36,11 @@ app.use(require('webpack-dev-middleware')(compiler, {
 
 app.use(require('webpack-hot-middleware')(compiler));
 
-app.get('/', function(req, res) {
-  res.sendFile(path.join(__dirname, 'index.html'));
-});
+// app.get('/', function(req, res) {
+//   res.sendFile(path.join(__dirname, 'index.html'));
+// });
+
+app.use(express.static(__dirname));
 
 app.use('/', routes);
 app.set('port', port);
@@ -54,14 +64,14 @@ server.on('listening', onListening);
 io.on('connection', function (socket){
   debug('connected');
   socket.on (CHAT_EVENT, function (msg){
-    debug (msg);
-    io.emit (CHAT_EVENT. msg);
+    socketHandler.chat (msg, function (err){
+      if (err)
+        debug ('Could not handle chat message');
+      else
+        io.emit (CHAT_EVENT, msg);
+    });
   });
-});
-
-io.on('connection', function(socket){
-  debug('a user connected');
-  socket.on('disconnect', function(){
+   socket.on('disconnect', function(){
     debug('user disconnected');
   });
 });

@@ -1,9 +1,7 @@
-// var debug = require ('debug') ('food-server:routes');
+'use strict'
 var express = require('express'),
     router = express.Router(),
     db = require ('../db/db.js');
-
-db ();
 
 /* GET home page. */
 router.post ('/login', function(req, res) {
@@ -68,6 +66,10 @@ router.post ('/submit_order', function(req, res) {
       res.status (200).send ({status: 'done'});
     }
   });
+});
+
+router.get ('/', function(req, res) {
+  res.sendFile('index.html');
 });
 
 module.exports = router;
