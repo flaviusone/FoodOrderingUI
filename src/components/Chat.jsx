@@ -80,7 +80,7 @@ module.exports = React.createClass({
       user: message.userName,
       text: message.message
     };
-    if (newMessage.user === this.props.userName) {
+    if ((newMessage.user === this.props.userName) || (message.roomId != this.props.roomId)) {
       return;
     }
     this.state.messages.push(newMessage);
@@ -89,7 +89,6 @@ module.exports = React.createClass({
   },
 
   _getInitialMessages: function(props) {
-    console.log(this.props);
     var preparedChatArray = [];
     if (props.chat.length === 0) {
       return props.chat;
