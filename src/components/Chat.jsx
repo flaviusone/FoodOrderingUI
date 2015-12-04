@@ -1,8 +1,9 @@
 var React = require('react'),
     MessageList = require('./MessageList.jsx'),
     InputForm = require('./InputForm.jsx'),
-    ComponentTree = require('react-component-tree');
-    // socket = require('socket.io-client');
+    ComponentTree = require('react-component-tree'),
+    _ = require('lodash');
+
 import io from 'socket.io-client';
 var socket = io('http://localhost:3000');
 
@@ -21,8 +22,14 @@ module.exports = React.createClass({
 
   getInitialState: function() {
     return {
-      messages: []
+      messages: this._getInitialMessages()
     };
+  },
+
+  componentWillReceiveProps: function(nextProps) {
+    this.setState({
+      messages: this._getInitialMessages()
+    });
   },
 
   componentDidMount: function() {
@@ -71,5 +78,22 @@ module.exports = React.createClass({
       return;
     }
     this.setState({messages: this.state.messages.concat(newMessage)});
+  },
+
+  _getInitialMessages: function() {
+    var preparedChatArray = [];
+    if (this.props.chat.length === 0) {
+      return this.props.chat;
+    }
+
+    _.forEach(this.props.chat, function(message) {
+      var newMessage = {
+        user: message.userName,
+        text: message.message
+      };
+      preparedChatArray.push(newMessage);
+    });
+
+    return preparedChatArray;
   }
 });

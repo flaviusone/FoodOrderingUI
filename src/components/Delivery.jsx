@@ -31,10 +31,10 @@ module.exports = React.createClass({
     chat: function() {
       return {
         component: Chat,
-        roomIndex: 42,
         userName: this.state.userName,
         userId: this.state.userId,
-        roomId: this.state.roomId
+        roomId: this.state.roomId,
+        chat: this.state.chat
       };
     },
 
@@ -61,7 +61,8 @@ module.exports = React.createClass({
     return {
       renderModal: true,
       roomId: null,
-      users: []
+      users: [],
+      chat: []
     };
   },
 
@@ -116,9 +117,12 @@ module.exports = React.createClass({
   },
 
   onRoomJoinSuccess: function(roomId, response) {
+    var room = _.find(this.state.data.rooms,
+        function(room) { return room._id === roomId; });
     this.setState({
       users: response.users,
-      roomId: roomId
+      roomId: roomId,
+      chat: room.chat
     });
   }
 });
