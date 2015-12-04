@@ -101,23 +101,6 @@ module.exports = React.createClass({
     }
   },
 
-  // _getUsers: function() {
-  //   var data = {
-  //     roomId: this.state.roomId
-  //   };
-  //   $.ajax({
-  //     type: 'POST',
-  //     url: '/login',
-  //     data: data,
-  //     dataType: 'json',
-  //     success: this.onSuccess
-  //   });
-  //   var userFixture = require('../../fixtures/UserThumbnail/base.js');
-
-  //   return _.times(4, function() {
-  //     return userFixture;
-  //   });
-  // }
   onRoomJoin: function(roomId) {
     var data = {
       roomId: roomId,
