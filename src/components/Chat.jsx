@@ -28,8 +28,13 @@ module.exports = React.createClass({
     };
   },
 
+  // shouldComponentUpdate: function(nextProps) {
+  //   return  nextProps.chat.length > this.props.chat.length ||
+  //           nextProps.roomId !== this.props.roomId;
+  // },
+
   componentWillReceiveProps: function(nextProps) {
-    if ((!initialMessages) && (nextProps.roomId != null))
+    if ((!initialMessages) || (nextProps.roomId != this.props.roomId))
     {
         initialMessages = true;
         this.setState({

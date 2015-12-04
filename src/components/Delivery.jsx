@@ -124,5 +124,5 @@ module.exports = React.createClass({
       roomId: roomId,
       chat: room.chat
     });
-  }
+  },
 });
