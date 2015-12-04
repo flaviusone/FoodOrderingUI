@@ -33,7 +33,7 @@ var restaurantSchema = mongoose.Schema ({
 	minimumOrder: String,
 	menu: [{
 		name: String,
-		price: Number,
+		price: String,
 		description: String,
 		quantity: String
 	}]
@@ -139,7 +139,7 @@ function getRoomById (roomId, cb)
 
 function addUserToRoom (userId, roomId, cb)
 {
-	Room.findByIdAndUpdate (roomId, {$push: {users: userId}}, function (err){
+	Room.findByIdAndUpdate (roomId, {$addToSet: {users: userId}}, function (err){
 		if (err)
 			debug ('Could not add user to room ' + err);
 		cb(err);
@@ -157,7 +157,7 @@ function removeUserFromRoom (userId, roomId, cb)
 
 function addOrdersToUser (userId, orders, cb)
 {
-	User.findByIdAndUpdate (userId, {$pushAll: {orders: orders}}, 
+	User.findByIdAndUpdate (userId, {$pushAll: {orders: orders}, {upsert: true}}, 
 		function (err){
 			if (err)
 				debug ('Could not add orders to user ' + err);
@@ -257,16 +257,18 @@ function addChatMessage (roomId, userId, userName, message, cb)
 	});
 }
 
-module.exports = function ()
+module.exports = function (cb)
 //function initDb ()
 {
 	mongoose.connect(URL);
 	var db = mongoose.connection;
-		db.on('error', console.error.bind(console, 'connection error:'));
-		//db.on('error', debug('connection error:'));
-		db.once('open', function (callback) {
-			debug ('Connected to database');
-		 });
+	db.on('error', function (err) {debug('connection error: '+err)});
+
+	db.once('open', function (callback) {
+		debug ('Connected to database');
+		if (cb)
+			cb();
+	});
 }
 
 module.exports.addChatMessage = addChatMessage;
