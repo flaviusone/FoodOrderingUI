@@ -33,7 +33,8 @@ module.exports = React.createClass({
         component: Chat,
         roomIndex: 42,
         userName: this.state.userName,
-        userId: this.state.userId
+        userId: this.state.userId,
+        roomId: this.state.roomId
       };
     },
 
@@ -83,11 +84,11 @@ module.exports = React.createClass({
     </div>;
   },
 
-  onLoginCallback: function(userName, userID) {
-    // set state cu userID si remove modal
+  onLoginCallback: function(userName, userId) {
+    // set state cu userId si remove modal
     this.setState({
       renderModal: false,
-      userID: userID,
+      userId: userId,
       userName: userName
     });
   },
@@ -100,23 +101,6 @@ module.exports = React.createClass({
     }
   },
 
-  // _getUsers: function() {
-  //   var data = {
-  //     roomId: this.state.roomId
-  //   };
-  //   $.ajax({
-  //     type: 'POST',
-  //     url: '/login',
-  //     data: data,
-  //     dataType: 'json',
-  //     success: this.onSuccess
-  //   });
-  //   var userFixture = require('../../fixtures/UserThumbnail/base.js');
-
-  //   return _.times(4, function() {
-  //     return userFixture;
-  //   });
-  // }
   onRoomJoin: function(roomId) {
     var data = {
       roomId: roomId,
@@ -127,11 +111,14 @@ module.exports = React.createClass({
       url: '/join_room',
       data: data,
       dataType: 'json',
-      success: this.onRoomJoinSuccess
+      success: this.onRoomJoinSuccess.bind(this, roomId)
     });
   },
 
-  onRoomJoinSuccess: function(response) {
-    this.setState({users: response.users});
+  onRoomJoinSuccess: function(roomId, response) {
+    this.setState({
+      users: response.users,
+      roomId: roomId
+    });
   }
 });
