@@ -15,7 +15,8 @@ function chat (chatStructure, cb)
 				cb (err, {
 					userId: chatStructure.userId, 
 					message: chatStructure.message, 
-					userName: userName
+					userName: userName,
+					roomId: chatStructure.roomId
 					});
 			});
 		}	
