@@ -7,6 +7,8 @@ var React = require('react'),
 import io from 'socket.io-client';
 var socket = io('http://localhost:3000');
 
+var initialMessages = false;
+
 require('../styles/chat.less');
 
 /**
@@ -22,14 +24,18 @@ module.exports = React.createClass({
 
   getInitialState: function() {
     return {
-      messages: this._getInitialMessages()
+      messages: []//this._getInitialMessages()
     };
   },
 
   componentWillReceiveProps: function(nextProps) {
-    this.setState({
-      messages: this._getInitialMessages()
-    });
+    if ((!initialMessages) && (nextProps.roomId != null))
+    {
+        initialMessages = true;
+        this.setState({
+        messages: this._getInitialMessages(nextProps)
+      });
+    }
   },
 
   componentDidMount: function() {
@@ -77,16 +83,19 @@ module.exports = React.createClass({
     if (newMessage.user === this.props.userName) {
       return;
     }
-    this.setState({messages: this.state.messages.concat(newMessage)});
+    this.state.messages.push(newMessage);
+    this.forceUpdate();
+    //this.setState({messages: this.state.messages.concat(newMessage)});
   },
 
-  _getInitialMessages: function() {
+  _getInitialMessages: function(props) {
+    console.log(this.props);
     var preparedChatArray = [];
-    if (this.props.chat.length === 0) {
-      return this.props.chat;
+    if (props.chat.length === 0) {
+      return props.chat;
     }
 
-    _.forEach(this.props.chat, function(message) {
+    _.forEach(props.chat, function(message) {
       var newMessage = {
         user: message.userName,
         text: message.message

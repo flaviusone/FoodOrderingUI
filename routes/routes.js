@@ -27,7 +27,7 @@ router.get ('/get_rooms', function(req, res) {
 });
 
 router.post ('/join_room', function(req, res) {
-  console.log(req.body);
+  console.log ('join_room');
   db.addUserToRoom (req.body.userId, req.body.roomId, function(err) {
     if (err) {
       res.status (200).send ({status: 'error'});

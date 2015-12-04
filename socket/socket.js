@@ -4,6 +4,7 @@ var db = require ('../db/db.js');
 
 function chat (chatStructure, cb)
 {
+	console.log (chatStructure);
 	db.getUserNameById (chatStructure.userId, function (err, userName){
 		if (err)
 			cb (err);

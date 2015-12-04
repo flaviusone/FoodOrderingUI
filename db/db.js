@@ -157,7 +157,7 @@ function removeUserFromRoom (userId, roomId, cb)
 
 function addOrdersToUser (userId, orders, cb)
 {
-	User.findByIdAndUpdate (userId, {$pushAll: {orders: orders}, {upsert: true}}, 
+	User.findByIdAndUpdate (userId, {$pushAll: {orders: orders}}, {upsert: true}, 
 		function (err){
 			if (err)
 				debug ('Could not add orders to user ' + err);
@@ -248,7 +248,7 @@ function getUsersByRoomId (roomId, cb)
 
 function addChatMessage (roomId, userId, userName, message, cb)
 {
-	debug (roomId);
+	debug ("roomId: " + roomId);
 	Room.findByIdAndUpdate (roomId, {$push: {chat: {userId: userId, message: message, userName:userName}}},
 	 function (err){
 		if (err)
