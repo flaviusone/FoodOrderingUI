@@ -43,6 +43,8 @@ app.use(require('webpack-hot-middleware')(compiler));
 
 app.use(express.static(__dirname));
 app.use(bodyParser.json());
+// for parsing application/x-www-form-urlencoded
+app.use(bodyParser.urlencoded({extended: true}));
 app.use('/', routes);
 app.set('port', port);
 

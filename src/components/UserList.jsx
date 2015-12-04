@@ -17,9 +17,9 @@ module.exports = React.createClass({
     userThumbnail: function(userConfig, index) {
       return {
         component: UserThumbnail,
-        userName: userConfig.userName,
-        avatar: userConfig.avatar,
-        order: userConfig.order,
+        userName: userConfig.name,
+        avatar: require('../../assets/img/flavius.png'),
+        orders: userConfig.orders,
         key: index
       };
     }

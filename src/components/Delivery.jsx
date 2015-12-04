@@ -1,9 +1,12 @@
 var React = require('react'),
     ComponentTree = require('react-component-tree'),
     RoomsList = require('./RoomsList.jsx'),
+    DataFetch = require('../mixins/data-fetch.js'),
     UserList = require('./UserList.jsx'),
+    LoginModal = require('./LoginModal.jsx'),
     Chat = require('./Chat.jsx'),
-    _ = require('lodash');
+    _ = require('lodash'),
+    $ = require('jquery');
 
 require('../styles/delivery.less');
 
@@ -13,34 +16,61 @@ require('../styles/delivery.less');
  */
 module.exports = React.createClass({
 
-  mixins: [ComponentTree.Mixin],
+  mixins: [DataFetch, ComponentTree.Mixin],
 
   children: {
     roomsList: function() {
       return {
         component: RoomsList,
-        rooms: this._getRooms()
+        dataUrl: '/get_rooms',
+        rooms: this._getRooms(),
+        onRoomJoin: this.onRoomJoin
       };
     },
 
     chat: function() {
       return {
         component: Chat,
-        roomIndex: 42
+        roomIndex: 42,
+        userName: this.state.userName,
+        userId: this.state.userId
       };
     },
 
     userList: function() {
       return {
         component: UserList,
-        users: this._getUsers()
+        users: this.state.users
+      };
+    },
+
+    loginModal: function() {
+      return {
+        component: LoginModal,
+        submitCallback: this.onLoginCallback
       };
     }
   },
 
-  render: function() {
-    return <div className='delivery'>
+  getDefaultProps: function() {
+    return {dataUrl: '/get_rooms'};
+  },
 
+  getInitialState: function() {
+    return {
+      renderModal: true,
+      roomId: null,
+      users: []
+    };
+  },
+
+  render: function() {
+    return this.state.renderModal ? this.loadChild('loginModal')
+                                  : this._renderAppComponents();
+  },
+
+  _renderAppComponents: function() {
+    return <div className='delivery'>
       <div className='rooms'>
         {this.loadChild('roomsList')}
       </div>
@@ -53,19 +83,55 @@ module.exports = React.createClass({
     </div>;
   },
 
-  _getRooms: function() {
-    var roomFixture = require('../../fixtures/RoomThumbnail/base.js');
-
-    return _.times(4, function() {
-      return roomFixture;
+  onLoginCallback: function(userName, userID) {
+    // set state cu userID si remove modal
+    this.setState({
+      renderModal: false,
+      userID: userID,
+      userName: userName
     });
   },
 
-  _getUsers: function() {
-    var userFixture = require('../../fixtures/UserThumbnail/base.js');
+  _getRooms: function() {
+    if (this.state.data) {
+      return this.state.data.rooms;
+    } else {
+      return null;
+    }
+  },
 
-    return _.times(4, function() {
-      return userFixture;
+  // _getUsers: function() {
+  //   var data = {
+  //     roomId: this.state.roomId
+  //   };
+  //   $.ajax({
+  //     type: 'POST',
+  //     url: '/login',
+  //     data: data,
+  //     dataType: 'json',
+  //     success: this.onSuccess
+  //   });
+  //   var userFixture = require('../../fixtures/UserThumbnail/base.js');
+
+  //   return _.times(4, function() {
+  //     return userFixture;
+  //   });
+  // }
+  onRoomJoin: function(roomId) {
+    var data = {
+      roomId: roomId,
+      userId: this.state.userId
+    };
+    $.ajax({
+      type: 'POST',
+      url: '/join_room',
+      data: data,
+      dataType: 'json',
+      success: this.onRoomJoinSuccess
     });
+  },
+
+  onRoomJoinSuccess: function(response) {
+    this.setState({users: response.users});
   }
 });
