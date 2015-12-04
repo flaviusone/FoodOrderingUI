@@ -2,6 +2,9 @@ var React = require('react'),
     MessageList = require('./MessageList.jsx'),
     InputForm = require('./InputForm.jsx'),
     ComponentTree = require('react-component-tree');
+    // socket = require('socket.io-client');
+import io from 'socket.io-client';
+var socket = io('http://localhost:3000');
 
 require('../styles/chat.less');
 
@@ -10,6 +13,7 @@ require('../styles/chat.less');
  * @param  {Integer} roomIndex
  * @param {String} userName
  * @param {Number} userID
+ * @param {Number} roomId
  */
 module.exports = React.createClass({
 
@@ -19,6 +23,10 @@ module.exports = React.createClass({
     return {
       messages: []
     };
+  },
+
+  componentDidMount: function() {
+    socket.on('chat', this._recieveMessage);
   },
 
   children: {
@@ -46,6 +54,22 @@ module.exports = React.createClass({
   },
 
   onMessageSubmit: function(message) {
+    //emit new message
+    socket.emit('chat', {roomId: this.props.roomId,
+                         userId: this.props.userId,
+                         message: message.text});
+
     this.setState({messages: this.state.messages.concat(message)});
+  },
+
+  _recieveMessage: function(message) {
+    var newMessage = {
+      user: message.userName,
+      text: message.message
+    };
+    if (newMessage.user === this.props.userName) {
+      return;
+    }
+    this.setState({messages: this.state.messages.concat(newMessage)});
   }
 });
