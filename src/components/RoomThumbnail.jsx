@@ -10,6 +10,8 @@ require('../styles/room-thumbnail.less');
  * @param {String} owner Room owner
  * @param {String} lock_hour Room lock hour
  * @param {Boolean} oddBackground Dictates thumbnail color
+ * @param {Function} onRoomJoin callback
+ * @param {Integer} id room id
  */
 module.exports = React.createClass({
 
@@ -39,10 +41,14 @@ module.exports = React.createClass({
       <p className="room-thumbnail-lock-hour">
         {this.props.lock_hour}
       </p>
-      <div className="room-thumbnail-join-button">
+      <div className="room-thumbnail-join-button" onClick={this._onRoomJoin}>
       Join
       </div>
     </div>;
+  },
+
+  _onRoomJoin: function() {
+    this.props.onRoomJoin(this.props.id);
   }
 
 

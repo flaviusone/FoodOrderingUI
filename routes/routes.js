@@ -1,13 +1,13 @@
-'use strict'
+'use strict';
+
 var express = require('express'),
     router = express.Router(),
     db = require ('../db/db.js');
 
 /* GET home page. */
 router.post ('/login', function(req, res) {
-
   db.getUserByUsername (req.body.username, function(err, user) {
-    if (err) {
+    if (err || !user) {
       res.status (200).send ({status: 'error'});
     } else {
       var userData = {name: user.name, userId: user._id};
@@ -76,14 +76,15 @@ router.post ('/submit_order', function(req, res) {
   });
 });
 
-router.post ('/add_room', function(req, res){
+router.post ('/add_room', function(req, res) {
   db.addRoom (req.body.userId, req.body.hourLimit, req.body.restaurantId,
-                function (err){
-    if (err)
-      res.status (200).send ({status: 'error'});
-    else
-      res.status(200).send ({status: 'done'});
-  });
+    function(err) {
+      if (err) {
+        res.status (200).send ({status: 'error'});
+      } else {
+        res.status(200).send ({status: 'done'});
+      }
+    });
 });
 
 router.get ('/', function(req, res) {

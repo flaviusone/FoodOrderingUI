@@ -8,6 +8,8 @@ require('../styles/chat.less');
 /**
  * Renders a list of messages and input form.
  * @param  {Integer} roomIndex
+ * @param {String} userName
+ * @param {Number} userID
  */
 module.exports = React.createClass({
 
@@ -31,7 +33,7 @@ module.exports = React.createClass({
       return {
         component: InputForm,
         onMessageSubmit: this.onMessageSubmit,
-        user: 'Brebex'
+        user: this.props.userName
       };
     }
   },

@@ -5,7 +5,8 @@ var React = require('react'),
     UserList = require('./UserList.jsx'),
     LoginModal = require('./LoginModal.jsx'),
     Chat = require('./Chat.jsx'),
-    _ = require('lodash');
+    _ = require('lodash'),
+    $ = require('jquery');
 
 require('../styles/delivery.less');
 
@@ -22,21 +23,24 @@ module.exports = React.createClass({
       return {
         component: RoomsList,
         dataUrl: '/get_rooms',
-        rooms: this._getRooms()
+        rooms: this._getRooms(),
+        onRoomJoin: this.onRoomJoin
       };
     },
 
     chat: function() {
       return {
         component: Chat,
-        roomIndex: 42
+        roomIndex: 42,
+        userName: this.state.userName,
+        userId: this.state.userId
       };
     },
 
     userList: function() {
       return {
         component: UserList,
-        users: this._getUsers()
+        users: this.state.users
       };
     },
 
@@ -53,7 +57,11 @@ module.exports = React.createClass({
   },
 
   getInitialState: function() {
-    return {renderModal: true};
+    return {
+      renderModal: true,
+      roomId: null,
+      users: []
+    };
   },
 
   render: function() {
@@ -77,8 +85,11 @@ module.exports = React.createClass({
 
   onLoginCallback: function(userName, userID) {
     // set state cu userID si remove modal
-    this.setState({renderModal: false});
-    return;
+    this.setState({
+      renderModal: false,
+      userID: userID,
+      userName: userName
+    });
   },
 
   _getRooms: function() {
@@ -89,11 +100,38 @@ module.exports = React.createClass({
     }
   },
 
-  _getUsers: function() {
-    var userFixture = require('../../fixtures/UserThumbnail/base.js');
+  // _getUsers: function() {
+  //   var data = {
+  //     roomId: this.state.roomId
+  //   };
+  //   $.ajax({
+  //     type: 'POST',
+  //     url: '/login',
+  //     data: data,
+  //     dataType: 'json',
+  //     success: this.onSuccess
+  //   });
+  //   var userFixture = require('../../fixtures/UserThumbnail/base.js');
 
-    return _.times(4, function() {
-      return userFixture;
+  //   return _.times(4, function() {
+  //     return userFixture;
+  //   });
+  // }
+  onRoomJoin: function(roomId) {
+    var data = {
+      roomId: roomId,
+      userId: this.state.userId
+    };
+    $.ajax({
+      type: 'POST',
+      url: '/join_room',
+      data: data,
+      dataType: 'json',
+      success: this.onRoomJoinSuccess
     });
+  },
+
+  onRoomJoinSuccess: function(response) {
+    this.setState({users: response.users});
   }
 });

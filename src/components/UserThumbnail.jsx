@@ -1,4 +1,5 @@
-var React = require('react');
+var React = require('react'),
+    _ = require('lodash');
 
 require('../styles/user-thumbnail.less');
 
@@ -6,7 +7,7 @@ require('../styles/user-thumbnail.less');
  * Renders room thumbnail
  * @param {String} userName User name
  * @param {String} avatar User avatar
- * @param {String} order What user ordered
+ * @param {Object[]} orders What user ordered
  */
 module.exports = React.createClass({
 
@@ -22,12 +23,16 @@ module.exports = React.createClass({
   },
 
   _renderInfo: function() {
+    var ordersArray = _.map(this.props.orders, function(order) {
+      return order.name;
+    });
+    var orders = ordersArray.join(' ');
     return <div className="user-thumbnail-info">
       <p className="user-thumbnail-name">
         {this.props.userName}
       </p>
       <p className="user-thumbnail-order">
-        Ordered: {this.props.order}
+        Ordered: {orders}
       </p>
     </div>;
   }

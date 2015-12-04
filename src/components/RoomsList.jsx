@@ -9,6 +9,7 @@ require('../styles/rooms-list.less');
  * Renders a list of RoomThumbnails (+ create room)
  * @param {Function} onRoomJoin When a room is joined send id to parent.
  * @param {Object[]} rooms Array of roomConfigs
+ * @param {Function} onRoomJoin callback
  */
 module.exports = React.createClass({
 
@@ -23,7 +24,9 @@ module.exports = React.createClass({
         owner: '',
         lock_hour: '',
         oddBackground: !!(index % 2),
-        key: index
+        onRoomJoin: this.props.onRoomJoin,
+        key: index,
+        id: roomConfig._id
       };
     }
   },

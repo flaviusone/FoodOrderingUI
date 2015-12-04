@@ -38,11 +38,11 @@ module.exports = React.createClass({
       dataType: 'json',
       success: this.onSuccess
     });
-    console.log(data);
   },
 
-  onSuccess: function() {
-    console.log('Succes');
+  onSuccess: function(response) {
+    var user = response.user;
+    this.props.submitCallback(user.name, user.userId);
   }
 });
 
