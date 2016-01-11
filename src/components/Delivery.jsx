@@ -34,7 +34,8 @@ module.exports = React.createClass({
         userName: this.state.userName,
         userId: this.state.userId,
         roomId: this.state.roomId,
-        chat: this.state.chat
+        chat: this.state.chat,
+        menu: this.state.menu
       };
     },
 
@@ -122,7 +123,8 @@ module.exports = React.createClass({
     this.setState({
       users: response.users,
       roomId: roomId,
-      chat: room.chat
+      chat: room.chat,
+      menu: response.restaurant.menu
     });
-  },
+  }
 });

@@ -1,6 +1,7 @@
 var React = require('react'),
     MessageList = require('./MessageList.jsx'),
     InputForm = require('./InputForm.jsx'),
+    OrderForm = require('./OrderForm.jsx'),
     ComponentTree = require('react-component-tree'),
     _ = require('lodash');
 
@@ -17,6 +18,7 @@ require('../styles/chat.less');
  * @param {String} userName
  * @param {Number} userID
  * @param {Number} roomId
+ * @param {Object[]} menu restaruant menu
  */
 module.exports = React.createClass({
 
@@ -34,10 +36,9 @@ module.exports = React.createClass({
   // },
 
   componentWillReceiveProps: function(nextProps) {
-    if ((!initialMessages) || (nextProps.roomId != this.props.roomId))
-    {
-        initialMessages = true;
-        this.setState({
+    if (!initialMessages || nextProps.roomId !== this.props.roomId) {
+      initialMessages = true;
+      this.setState({
         messages: this._getInitialMessages(nextProps)
       });
     }
@@ -61,11 +62,19 @@ module.exports = React.createClass({
         onMessageSubmit: this.onMessageSubmit,
         user: this.props.userName
       };
+    },
+
+    orderForm: function() {
+      return {
+        component: OrderForm,
+        menu: this.props.menu
+      };
     }
   },
 
   render: function() {
     return <div className="chat-component">
+      {this.loadChild('orderForm')}
       {this.loadChild('messageList')}
       {this.loadChild('inputForm')}
     </div>;
