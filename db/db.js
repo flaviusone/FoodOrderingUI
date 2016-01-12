@@ -4,7 +4,7 @@ var mongoose = require ('mongoose');
 var debug = require ('debug') ('food-server:db');
 
 var URL = 'mongodb://food:hungry@ds053874.mongolab.com:53874/food-order';
-//ioana 
+//ioana
 //f00d0rder
 
 var roomSchema = mongoose.Schema ({
@@ -14,7 +14,8 @@ var roomSchema = mongoose.Schema ({
 		name: String
 	},
 	_id: {type: mongoose.Schema.Types.ObjectId, default: function () { return new mongoose.Types.ObjectId()}},
-	hourLimit: Date, 
+	hourLimit: Date,
+	imgUrl: String,
 	restaurantId: mongoose.Schema.Types.ObjectId,
 	users: [mongoose.Schema.Types.ObjectId],
 	chat: [{
@@ -76,7 +77,7 @@ function addRoom (userId, hourLimit, restaurantId, cb)
 
 			room.save (function (err){
 				cb (err);
-			});	
+			});
 		}
 	});
 }
@@ -118,7 +119,7 @@ function getRestaurantById (restaurantId, cb)
 			}
 			cb (err, doc);
 		}
-	});	
+	});
 }
 
 function getRoomById (roomId, cb)
@@ -134,7 +135,7 @@ function getRoomById (roomId, cb)
 			}
 			cb (err, doc);
 		}
-	});	
+	});
 }
 
 function addUserToRoom (userId, roomId, cb)
@@ -157,7 +158,7 @@ function removeUserFromRoom (userId, roomId, cb)
 
 function addOrdersToUser (userId, orders, cb)
 {
-	User.findByIdAndUpdate (userId, {$pushAll: {orders: orders}}, {upsert: true}, 
+	User.findByIdAndUpdate (userId, {$set: {orders: orders}}, {upsert: true},
 		function (err){
 			if (err)
 				debug ('Could not add orders to user ' + err);
@@ -168,7 +169,7 @@ function addOrdersToUser (userId, orders, cb)
 
 function removeOrderFromUser (userId, orderId, cb)
 {
-	User.findByIdAndUpdate (userId, {$pull: {orders: {_id: orderId}}}, 
+	User.findByIdAndUpdate (userId, {$pull: {orders: {_id: orderId}}},
 		function (err){
 			if (err)
 				debug ('Could not remove order from user ' + err);
@@ -179,7 +180,7 @@ function removeOrderFromUser (userId, orderId, cb)
 
 function removeAllOrdersFromUser (userId, cb)
 {
-	User.findByIdAndUpdate (userId, {$set: {orders: []}}, 
+	User.findByIdAndUpdate (userId, {$set: {orders: []}},
 		function (err){
 			if (err)
 				debug ('Could not remove all orders from user ' + err);
@@ -228,6 +229,15 @@ function getAllRooms (cb)
 	Room.find ({}, function (err, docs){
 		if (err)
 			debug ('Could not get rooms '+err);
+		cb (err, docs);
+	});
+}
+
+function getAllUsers (cb)
+{
+	User.find ({}, function (err, docs){
+		if (err)
+			debug ('Could not get users '+err);
 		cb (err, docs);
 	});
 }
@@ -283,6 +293,7 @@ module.exports.removeAllOrdersFromUser = removeAllOrdersFromUser;
 module.exports.deleteRoom = deleteRoom;
 module.exports.getUserByUsername = getUserByUsername;
 module.exports.getAllRooms = getAllRooms;
+module.exports.getAllUsers = getAllUsers;
 module.exports.getRestaurantById = getRestaurantById;
 module.exports.getRoomById = getRoomById;
 module.exports.getUsersByRoomId = getUsersByRoomId;

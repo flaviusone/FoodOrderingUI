@@ -32,7 +32,7 @@ module.exports = React.createClass({
   },
 
   _renderUsers: function() {
-    return _.map(this.props.users, function(userConfig, index) {
+    return _.map(this.props.userOrders, function(userConfig, index) {
       return this.loadChild('userThumbnail', userConfig, index);
     }, this);
   }

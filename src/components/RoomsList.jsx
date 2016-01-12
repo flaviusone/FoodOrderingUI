@@ -20,7 +20,7 @@ module.exports = React.createClass({
       return {
         component: RoomThumbnail,
         title: roomConfig.name,
-        image: require('../../assets/img/jerrys_logo.png'),
+        image: roomConfig.imgUrl,
         owner: '',
         lock_hour: '',
         oddBackground: !!(index % 2),

@@ -34,14 +34,16 @@ module.exports = React.createClass({
         userName: this.state.userName,
         userId: this.state.userId,
         roomId: this.state.roomId,
-        chat: this.state.chat
+        chat: this.state.chat,
+        menu: this.state.menu
       };
     },
 
     userList: function() {
       return {
         component: UserList,
-        users: this.state.users
+        users: this.state.users,
+        userOrders: this.state.roomId ? this._getUserOrders() : null
       };
     },
 
@@ -94,6 +96,14 @@ module.exports = React.createClass({
     });
   },
 
+  _getUserOrders: function() {
+    if (this.state.data) {
+      return this.state.data.userOrders;
+    } else {
+      return null;
+    }
+  },
+
   _getRooms: function() {
     if (this.state.data) {
       return this.state.data.rooms;
@@ -122,7 +132,8 @@ module.exports = React.createClass({
     this.setState({
       users: response.users,
       roomId: roomId,
-      chat: room.chat
+      chat: room.chat,
+      menu: response.restaurant.menu
     });
   }
 });
