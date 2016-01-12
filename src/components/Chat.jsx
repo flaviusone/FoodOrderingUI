@@ -16,7 +16,7 @@ require('../styles/chat.less');
  * Renders a list of messages and input form.
  * @param  {Integer} roomIndex
  * @param {String} userName
- * @param {Number} userID
+ * @param {Number} userId
  * @param {Number} roomId
  * @param {Object[]} menu restaruant menu
  */
@@ -67,7 +67,8 @@ module.exports = React.createClass({
     orderForm: function() {
       return {
         component: OrderForm,
-        menu: this.props.menu
+        menu: this.props.menu,
+        userId: this.props.userId
       };
     }
   },

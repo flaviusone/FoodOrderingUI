@@ -12,7 +12,7 @@ require('../styles/menuitem-thumbnail.less');
  * @param {String} price
  * @param {Boolean} oddBackground Dictates thumbnail color
  * @param {Function} onItemAdd callback
- * @param {Function} onItemSubstract callback
+ * @param {Function} onItemSubtract callback
  */
 module.exports = React.createClass({
 
@@ -34,7 +34,7 @@ module.exports = React.createClass({
   _renderInfo: function() {
     return <div className="menuitem-thumbnail-info">
       <p className="menuitem-thumbnail-title">
-        {this.props.name}
+        {this.props.name}{this.renderNumberAdded()}
       </p>
       <p className="menuitem-thumbnail-description">
         {this.props.description}
@@ -49,12 +49,46 @@ module.exports = React.createClass({
       </div>
       <div className="menuitem-thumbnail-buttons">
         <img src={require('../../assets/img/add_item.png')}
-             className="menuitem-thumbnail-add-item">
+             className="menuitem-thumbnail-add-item"
+             onClick={this.onItemAdd}>
         </img>
         <img src={require('../../assets/img/remove_item.png')}
-             className="menuitem-thumbnail-remove-item">
+             className="menuitem-thumbnail-remove-item"
+             onClick={this.onItemSubtract}>
         </img>
       </div>
     </div>;
+  },
+
+  renderNumberAdded: function() {
+    if (this.props.counter > 0) {
+      return ' - x' + this.props.counter;
+    }
+  },
+
+  _getPriceAsNumber: function() {
+    var price = this.props.price;
+    return parseFloat(price.split(' ')[1]);
+  },
+
+
+  // Updates total with new added item
+  onItemAdd: function() {
+    var menuitem = {
+      name: this.props.name,
+      price: this._getPriceAsNumber(),
+      index: this.props.index
+    };
+    this.props.onItemAdd(menuitem);
+  },
+
+  // Updates total with new deleted item
+  onItemSubtract: function() {
+    var menuitem = {
+      name: this.props.name,
+      price: this._getPriceAsNumber(),
+      index: this.props.index
+    };
+    this.props.onItemSubtract(menuitem);
   }
 });

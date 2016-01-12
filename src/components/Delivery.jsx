@@ -42,7 +42,8 @@ module.exports = React.createClass({
     userList: function() {
       return {
         component: UserList,
-        users: this.state.users
+        users: this.state.users,
+        userOrders: this.state.roomId ? this._getUserOrders() : null
       };
     },
 
@@ -93,6 +94,14 @@ module.exports = React.createClass({
       userId: userId,
       userName: userName
     });
+  },
+
+  _getUserOrders: function() {
+    if (this.state.data) {
+      return this.state.data.userOrders;
+    } else {
+      return null;
+    }
   },
 
   _getRooms: function() {

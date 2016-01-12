@@ -21,7 +21,13 @@ router.get ('/get_rooms', function(req, res) {
     if (err) {
       res.status (200).send ({status: 'error'});
     } else {
-      res.status (200).send ({status: 'done', rooms: rooms});
+      db.getAllUsers (function(err, users) {
+        if (err)
+          res.status (200).send ({status: 'error'});
+        else {
+          res.status (200).send ({status: 'done', rooms: rooms, userOrders: users});
+        }
+      });
     }
   });
 });

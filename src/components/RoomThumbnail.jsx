@@ -35,9 +35,9 @@ module.exports = React.createClass({
       <p className="room-thumbnail-title">
         {this.props.title}
       </p>
-      <p className="room-thumbnail-owner">
+      {/*<p className="room-thumbnail-owner">
         Owner: {this.props.owner}
-      </p>
+      </p>*/}
       <p className="room-thumbnail-lock-hour">
         {this.props.lock_hour}
       </p>
