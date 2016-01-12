@@ -48,15 +48,13 @@ module.exports = React.createClass({
         </p>
       </div>
       <div className="menuitem-thumbnail-buttons">
-        <img src={require('../../assets/img/add_item.png')} className="menuitem-thumbnail-add-item"></img>
-        <img src={require('../../assets/img/remove_item.png')} className="menuitem-thumbnail-remove-item"></img>
+        <img src={require('../../assets/img/add_item.png')}
+             className="menuitem-thumbnail-add-item">
+        </img>
+        <img src={require('../../assets/img/remove_item.png')}
+             className="menuitem-thumbnail-remove-item">
+        </img>
       </div>
     </div>;
-  },
-
-  _onRoomJoin: function() {
-    this.props.onRoomJoin(this.props.id);
   }
-
-
 });
