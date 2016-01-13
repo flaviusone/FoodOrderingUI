@@ -12,13 +12,15 @@ require('../styles/room-thumbnail.less');
  * @param {Boolean} oddBackground Dictates thumbnail color
  * @param {Function} onRoomJoin callback
  * @param {Integer} id room id
+ * @param {Boolean} selectedRoom
  */
 module.exports = React.createClass({
 
   render: function() {
     var classes = classSet({
       'room-thumbnail': true,
-      'oddBackground': this.props.oddBackground
+      'oddBackground': this.props.oddBackground && !this.props.selectedRoom,
+      'selected-room': this.props.selectedRoom
     });
     return <div className={classes}>
       {this.props.image ? this._renderLogo() : null}
