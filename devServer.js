@@ -19,7 +19,7 @@ var CHAT_EVENT = 'chat';
 
 
 var ports = {
-  dev: normalizePort(process.env.PORT || 3000),
+  dev: process.env.PORT || 3000,
   playground: 8989
 };
 
@@ -87,7 +87,7 @@ io.on('connection', function (socket){
  * Normalize a port into a number, string, or false.
  */
 
-function normalizePort(val) {
+function val){
   var port = parseInt(val, 10);
 
   if (isNaN(port)) {
