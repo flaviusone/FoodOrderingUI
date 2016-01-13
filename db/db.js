@@ -91,14 +91,12 @@ function addRestaurant (restaurant, cb)
 	});
 }
 
-function addUser (cb)
+function addUser (username, name, cb)
 {
-	//TODO
-
-	//just testing
 	var user  = new User ({
-		username: 'testuser2',
-		name: 'I test also'
+		username: username,
+		name: name,
+		orders: []
 	});
 
 	user.save (function (err){

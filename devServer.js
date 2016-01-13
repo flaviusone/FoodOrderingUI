@@ -8,12 +8,15 @@ var path = require('path'),
     http = require('http'),
     debug = require('debug')('food-server:server'),
     socketHandler = require ('./socket/socket.js'),
-    bodyParser = require('body-parser');
+    bodyParser = require('body-parser'),
+    session = require('express-session'),
+    passport = require ('passport');
 
 /**
 *  Connect to database.
 */
 require ('./db/db.js')();
+require ('./facebook.js');
 
 var CHAT_EVENT = 'chat';
 
@@ -43,10 +46,25 @@ app.use(require('webpack-hot-middleware')(compiler));
 
 app.use(express.static(__dirname));
 app.use(bodyParser.json());
+app.use(session({login: false, secret: 'shh'}));
 // for parsing application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({extended: true}));
+app.use(passport.initialize());
+app.use(passport.session());
 app.use('/', routes);
 app.set('port', port);
+
+app.use(function(req, res, next) {
+    var sess = req.session;
+    if((req.url === '/login'))
+    {
+      next();
+    }
+    else if(sess.login)
+      next();
+    else
+      res.redirect('/login');   
+  });
 
 /**
  * Create HTTP server.

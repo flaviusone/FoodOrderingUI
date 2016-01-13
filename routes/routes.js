@@ -2,19 +2,35 @@
 
 var express = require('express'),
     router = express.Router(),
-    db = require ('../db/db.js');
+    db = require ('../db/db.js'),
+    passport = require ('passport');
 
 /* GET home page. */
-router.post ('/login', function(req, res) {
-  db.getUserByUsername (req.body.username, function(err, user) {
-    if (err || !user) {
-      res.status (200).send ({status: 'error'});
-    } else {
-      var userData = {name: user.name, userId: user._id};
-      res.status (200).send ({status: 'done', user: userData});
-    }
-  });
+// router.post ('/login', function(req, res) {
+//   db.getUserByUsername (req.body.username, function(err, user) {
+//     if (err || !user) {
+//       res.status (200).send ({status: 'error'});
+//     } else {
+//       var userData = {name: user.name, userId: user._id};
+//       res.status (200).send ({status: 'done', user: userData});
+//     }
+//   });
+// });
+
+// route for facebook authentication and login
+// different scopes while logging in
+router.get('/login', function (req, res){
+  passport.authenticate ('facebook', {scope : 'email'}, function (err, user, info))
 });
+//  passport.authenticate('facebook', { scope : 'email' }));
+ 
+//handle the callback after facebook has authenticated the user
+router.get('/login/facebook/callback',
+  passport.authenticate('facebook', {
+    successRedirect : '/',
+    failureRedirect : '/login'
+  })
+);
 
 router.get ('/get_rooms', function(req, res) {
   db.getAllRooms (function(err, rooms) {
@@ -33,7 +49,6 @@ router.get ('/get_rooms', function(req, res) {
 });
 
 router.post ('/join_room', function(req, res) {
-  console.log ('join_room');
   db.addUserToRoom (req.body.userId, req.body.roomId, function(err) {
     if (err) {
       res.status (200).send ({status: 'error'});
@@ -91,10 +106,6 @@ router.post ('/add_room', function(req, res) {
         res.status(200).send ({status: 'done'});
       }
     });
-});
-
-router.get ('/', function(req, res) {
-  res.sendFile('index.html');
 });
 
 module.exports = router;
