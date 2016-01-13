@@ -1,6 +1,7 @@
 var React = require('react'),
     MenuItemsList = require('./MenuItemsList.jsx'),
     ComponentTree = require('react-component-tree'),
+    InputForm = require('./InputForm.jsx'),
     Button = require('react-bootstrap/lib/Button'),
     _ = require('lodash'),
     $ = require('jquery');
@@ -20,7 +21,8 @@ module.exports = React.createClass({
     return {
       total: 0,
       orderedItems: [],
-      counters: []
+      counters: [],
+      menu: []
     };
   },
 
@@ -29,8 +31,10 @@ module.exports = React.createClass({
       this.setState({
         total: 0,
         orderedItems: [],
-        counters: Array.apply(null, new Array(nextProps.menu.length))
-                     .map(Number.prototype.valueOf, 0)
+        menu: _.map(nextProps.menu, function(menuitem) {
+          menuitem.counter = 0;
+          return menuitem;
+        })
       });
     }
   },
@@ -40,10 +44,17 @@ module.exports = React.createClass({
     menuItemsList: function() {
       return {
         component: MenuItemsList,
-        menu: this.props.menu,
+        menu: this.state.menu,
         counters: this.state.counters,
         onItemAdd: this.onItemAdd,
         onItemSubtract: this.onItemSubtract
+      };
+    },
+    inputForm: function() {
+      return {
+        component: InputForm,
+        onMessageSubmit: this.onSearch,
+        user: this.props.userName
       };
     }
   },
@@ -54,6 +65,7 @@ module.exports = React.createClass({
               bsStyle="primary" bsSize="small"
               onClick={this.onOrder}>Order food!
       </Button>
+      {this.loadChild('inputForm')}
       <Button className="order-form-list-clear-button"
               bsStyle="primary" bsSize="small"
               onClick={this.onClear}>Clear
@@ -84,8 +96,10 @@ module.exports = React.createClass({
     this.setState({
       total: 0,
       orderedItems: [],
-      counters: Array.apply(null, new Array(this.props.menu.length))
-                     .map(Number.prototype.valueOf, 0)
+      menu: _.map(this.state.menu, function(menuitem) {
+        menuitem.counter = 0;
+        return menuitem;
+      })
     });
   },
 
@@ -95,10 +109,10 @@ module.exports = React.createClass({
     stateItems.push(item);
     var newTotal = this.state.total;
     newTotal += item.price;
-    var newCounters = this.state.counters;
-    newCounters[item.index] += 1;
+    var newMenu = this.state.menu;
+    newMenu[item.index].counter += 1;
     this.setState({
-      counters: newCounters,
+      menu: newMenu,
       orderedItems: stateItems,
       total: newTotal
     });
@@ -111,12 +125,32 @@ module.exports = React.createClass({
     var newTotal = this.state.total;
     newTotal -= item.price;
     newTotal = newTotal < 0 ? 0 : newTotal;
-    var newCounters = this.state.counters;
-    newCounters[item.index] -= 1;
+    var newMenu = this.state.menu;
+    newMenu[item.index].counter -= 1;
     this.setState({
-      counters: newCounters,
+      menu: newMenu,
       orderedItems: stateItems,
       total: newTotal
+    });
+  },
+
+  onSearch: function(value) {
+    var newMenu;
+    if (value.text === '') {
+      newMenu = _.map(this.props.menu, function(menuitem) {
+        menuitem.counter = 0;
+        return menuitem;
+      });
+    }else {
+      newMenu = _.filter(this.state.menu, function(menuitem) {
+        if (_.contains(menuitem.name, value.text) ||
+            _.contains(menuitem.description, value.text)) {
+          return true;
+        }
+      });
+    }
+    this.setState({
+      menu: newMenu
     });
   }
 });
