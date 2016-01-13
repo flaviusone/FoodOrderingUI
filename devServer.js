@@ -16,7 +16,7 @@ var path = require('path'),
 *  Connect to database.
 */
 require ('./db/db.js')();
-require ('./facebook.js');
+//require ('./facebook.js');
 
 var CHAT_EVENT = 'chat';
 
@@ -46,7 +46,7 @@ app.use(require('webpack-hot-middleware')(compiler));
 
 app.use(express.static(__dirname));
 app.use(bodyParser.json());
-app.use(session({login: false, secret: 'shh'}));
+app.use(session({secret: 'shh'}));
 // for parsing application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(passport.initialize());
@@ -55,12 +55,12 @@ app.use('/', routes);
 app.set('port', port);
 
 app.use(function(req, res, next) {
-    var sess = req.session;
+    //var sess = req.session;
     if((req.url === '/login'))
     {
       next();
     }
-    else if(sess.login)
+    else if(req.user)
       next();
     else
       res.redirect('/login');   
