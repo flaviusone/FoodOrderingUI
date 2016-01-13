@@ -11,7 +11,6 @@ require('../styles/bootstrap/css/bootstrap.min.css');
  * Renders a list of MenuItemThumbnails + Total
  * @param {Function} onOrderPress callback
  * @param {Object[]} menu Array of menuitems
- * @package {Number[]} counters
  */
 module.exports = React.createClass({
 
@@ -22,7 +21,7 @@ module.exports = React.createClass({
       return {
         component: MenuItemThumbnail,
         name: menuitem.name,
-        counter: this.props.counters[index],
+        counter: this.props.menu[index].counter,
         index: index,
         image: require('../../assets/img/menu_placeholder.png'),
         description: menuitem.description,
