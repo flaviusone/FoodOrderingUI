@@ -16,7 +16,7 @@ var path = require('path'),
 *  Connect to database.
 */
 require ('./db/db.js')();
-//require ('./facebook.js');
+require ('./facebook.js');
 
 var CHAT_EVENT = 'chat';
 
