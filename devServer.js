@@ -87,7 +87,7 @@ io.on('connection', function (socket){
  * Normalize a port into a number, string, or false.
  */
 
-function val){
+function normalizePort(val) {
   var port = parseInt(val, 10);
 
   if (isNaN(port)) {
