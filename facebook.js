@@ -5,12 +5,10 @@ var passport = require ('passport'),
     db = require ('./db/db.js');
 
 passport.serializeUser(function(user, done) {
-  console.log('serializeUser')
   done(null, user.username);
 });
 
 passport.deserializeUser(function (id, done) {
-  console.log ('deserializeUser');
   db.getUserByUsername (id, function (err, user){
     done (err, user);
   });

@@ -10,7 +10,8 @@ var path = require('path'),
     socketHandler = require ('./socket/socket.js'),
     bodyParser = require('body-parser'),
     session = require('express-session'),
-    passport = require ('passport');
+    passport = require ('passport'),
+    cors = require('cors');
 
 /**
 *  Connect to database.
@@ -33,6 +34,8 @@ var webpackConfig = require('./webpack.config.' + env),
     compiler = webpack(webpackConfig),
     app = express();
 
+app.use(cors());
+
 app.use(require('webpack-dev-middleware')(compiler, {
   publicPath: webpackConfig.output.publicPath,
   noInfo: true
@@ -43,6 +46,7 @@ app.use(require('webpack-hot-middleware')(compiler));
 // app.get('/', function(req, res) {
 //   res.sendFile(path.join(__dirname, 'index.html'));
 // });
+
 
 app.use(express.static(__dirname));
 app.use(bodyParser.json());

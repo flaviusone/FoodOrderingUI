@@ -30,7 +30,7 @@ router.get ('/login/facebook/callback', function (req, res, next){
         if (err)
           res.redirect ('/login');
         else
-          res.redirect('/');
+          res.redirect('/login.html');
       });
     }
     else res.redirect ('/login');
@@ -43,23 +43,6 @@ router.get ('/get_user_info', function (req, res){
 });
 
 router.get ('/get_rooms', function(req, res) {
-  db.getAllRooms (function(err, rooms) {
-    if (err) {
-      res.status (200).send ({status: 'error'});
-    } else {
-      db.getAllUsers (function(err, users) {
-        if (err)
-          res.status (200).send ({status: 'error'});
-        else {
-          res.status (200).send ({status: 'done', rooms: rooms, userOrders: users});
-        }
-      });
-    }
-  });
-});
-
-router.get ('/get_ioana', function(req, res) {
-  console.log(req.user);
   db.getAllRooms (function(err, rooms) {
     if (err) {
       res.status (200).send ({status: 'error'});
@@ -139,11 +122,5 @@ router.post ('/add_room', function(req, res) {
       }
     });
 });
-
-
-
-// router.get ('/', function(req, res) {
-//   res.sendFile('index.html');
-// });
 
 module.exports = router;
