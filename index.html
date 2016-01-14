@@ -8,11 +8,41 @@
       margin: 0;
       padding: 0;
     }
+    body {
+      background-image: url("assets/img/background.jpg");
+      background-size:     cover;
+    }
+    .loginbutton {
+      display: block;
+      width: 300px;
+      height: 20px;
+      position: absolute;
+      top:0;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      margin: auto;
+    }
+    .logo-container {
+      margin: auto;
+      margin-top: 10%;
+      width: 200px;
+      height: 111px;
+      color: white;
+      -webkit-filter: invert(100%);
+      filter: invert(100%);
+    }
+
   </style>
 </head>
-<body>
-  <a href="https://foodordering.herokuapp.com/login">
-    <img src="assets/img/facebook-login-button.png"/>
-  </a>
+<body >
+  <div class="logo-container">
+    <img class="logo" src="assets/img/logo1.png"/>
+  </div>
+  <div class="loginbutton">
+    <a href="https://foodordering.herokuapp.com/login">
+      <img src="assets/img/facebook-login-button.png"/>
+    </a>
+  </div>
 </body>
 </html>
