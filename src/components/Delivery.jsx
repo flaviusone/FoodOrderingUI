@@ -122,9 +122,7 @@ module.exports = React.createClass({
   onLoginCallback: function(response) {
     this.setState({
       userId: response.user.userId,
-      userName: response.user.name,
-      userName: response.user.name,
-      userImg: response.user.imgUrl
+      userName: response.user.name
     });
   },
 
