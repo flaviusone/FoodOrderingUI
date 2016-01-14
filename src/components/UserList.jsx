@@ -19,7 +19,9 @@ module.exports = React.createClass({
         component: UserThumbnail,
         userName: userConfig.name,
         avatar: require('../../assets/img/flavius.png'),
-        orders: userConfig.orders,
+        orders: _.find(this.props.userOrders, function(userOrder) {
+          return userOrder._id === userConfig._id;
+        }).orders,
         key: index
       };
     }
@@ -32,7 +34,7 @@ module.exports = React.createClass({
   },
 
   _renderUsers: function() {
-    return _.map(this.props.userOrders, function(userConfig, index) {
+    return _.map(this.props.users, function(userConfig, index) {
       return this.loadChild('userThumbnail', userConfig, index);
     }, this);
   }

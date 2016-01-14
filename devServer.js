@@ -22,7 +22,7 @@ var CHAT_EVENT = 'chat';
 
 
 var ports = {
-  dev: normalizePort(process.env.PORT || 3000),
+  dev: process.env.PORT || 3000,
   playground: 8989
 };
 

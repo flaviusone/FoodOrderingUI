@@ -24,6 +24,7 @@ module.exports = React.createClass({
         component: RoomsList,
         dataUrl: '/get_rooms',
         rooms: this._getRooms(),
+        curentRoom: this.state.roomId,
         onRoomJoin: this.onRoomJoin
       };
     },
@@ -114,6 +115,7 @@ module.exports = React.createClass({
 
   onRoomJoin: function(roomId) {
     var data = {
+      oldRoom: this.state.roomId,
       roomId: roomId,
       userId: this.state.userId
     };

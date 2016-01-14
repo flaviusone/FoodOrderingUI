@@ -6,7 +6,7 @@ var React = require('react'),
     _ = require('lodash');
 
 import io from 'socket.io-client';
-var socket = io('http://localhost:3000');
+var socket = io('https://foodordering.herokuapp.com/');
 
 var initialMessages = false;
 

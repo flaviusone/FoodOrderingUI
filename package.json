@@ -5,7 +5,7 @@
   "main": "index.js",
   "author": "Flavius Tirnacop",
   "license": "ISC",
-  "devDependencies": {
+  "dependencies": {
     "babel-core": "^5.8.34",
     "babel-loader": "^5.4.0",
     "babel-plugin-react-transform": "^1.1.1",
@@ -36,9 +36,8 @@
     "yargs": "^3.30.0",
     "fs": "0.0.2",
     "lodash": "3.10.1",
-    "request": "2.65.0"
-  },
-  "dependencies": {
+    "request": "2.65.0",
+    "webpack": "^1.12.9",
     "async": "^1.5.0",
     "body-parser": "~1.13.2",
     "debug": "~2.2.0",

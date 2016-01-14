@@ -10,6 +10,7 @@ require('../styles/rooms-list.less');
  * @param {Function} onRoomJoin When a room is joined send id to parent.
  * @param {Object[]} rooms Array of roomConfigs
  * @param {Function} onRoomJoin callback
+ * @param {Number} curentRoom
  */
 module.exports = React.createClass({
 
@@ -25,6 +26,7 @@ module.exports = React.createClass({
         lock_hour: '',
         oddBackground: !!(index % 2),
         onRoomJoin: this.props.onRoomJoin,
+        selectedRoom: this.props.curentRoom === roomConfig._id,
         key: index,
         id: roomConfig._id
       };

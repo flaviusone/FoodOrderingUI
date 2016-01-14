@@ -4,7 +4,7 @@ var express = require('express'),
     router = express.Router(),
     db = require ('../db/db.js'),
     passport = require ('passport');
-    
+
 /* GET home page. */
 // router.post ('/login', function(req, res) {
 //   db.getUserByUsername (req.body.username, function(err, user) {
@@ -21,10 +21,10 @@ var express = require('express'),
 // different scopes while logging in
 router.get('/login',
   passport.authenticate('facebook', { scope : 'email' }));
- 
+
 router.get ('/login/facebook/callback', function (req, res, next){
   passport.authenticate ('facebook', {failureRedirect:'/login'},function (err, user, info){
-    if (user != null) 
+    if (user != null)
     {
       req.login (user, function (err){
         if (err)
@@ -76,6 +76,10 @@ router.get ('/get_ioana', function(req, res) {
 });
 
 router.post ('/join_room', function(req, res) {
+  console.log ('join_room');
+  if (req.body.oldRoom !== null) {
+    db.removeUserFromRoom (req.body.userId, req.body.oldRoom,  function(err) {});
+  }
   console.log(req.user);
   db.addUserToRoom (req.body.userId, req.body.roomId, function(err) {
     if (err) {
