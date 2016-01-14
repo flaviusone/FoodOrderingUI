@@ -3,7 +3,6 @@ var React = require('react'),
     RoomsList = require('./RoomsList.jsx'),
     DataFetch = require('../mixins/data-fetch.js'),
     UserList = require('./UserList.jsx'),
-    LoginModal = require('./LoginModal.jsx'),
     Chat = require('./Chat.jsx'),
     _ = require('lodash'),
     $ = require('jquery');
@@ -17,6 +16,16 @@ require('../styles/delivery.less');
 module.exports = React.createClass({
 
   mixins: [DataFetch, ComponentTree.Mixin],
+
+  componentDidMount: function() {
+    $.ajax({
+      type: 'GET',
+      url: '/get_user_info',
+      data: {},
+      dataType: 'json',
+      success: this.onLoginCallback
+    });
+  },
 
   children: {
     roomsList: function() {
@@ -46,13 +55,6 @@ module.exports = React.createClass({
         users: this.state.users,
         userOrders: this.state.roomId ? this._getUserOrders() : null
       };
-    },
-
-    loginModal: function() {
-      return {
-        component: LoginModal,
-        submitCallback: this.onLoginCallback
-      };
     }
   },
 
@@ -62,7 +64,6 @@ module.exports = React.createClass({
 
   getInitialState: function() {
     return {
-      renderModal: true,
       roomId: null,
       users: [],
       chat: []
@@ -70,8 +71,7 @@ module.exports = React.createClass({
   },
 
   render: function() {
-    return this.state.renderModal ? this.loadChild('loginModal')
-                                  : this._renderAppComponents();
+    return this._renderAppComponents();
   },
 
   _renderAppComponents: function() {
@@ -86,15 +86,6 @@ module.exports = React.createClass({
         {this.loadChild('userList')}
       </div>
     </div>;
-  },
-
-  onLoginCallback: function(userName, userId) {
-    // set state cu userId si remove modal
-    this.setState({
-      renderModal: false,
-      userId: userId,
-      userName: userName
-    });
   },
 
   _getUserOrders: function() {
@@ -125,6 +116,15 @@ module.exports = React.createClass({
       data: data,
       dataType: 'json',
       success: this.onRoomJoinSuccess.bind(this, roomId)
+    });
+  },
+
+  onLoginCallback: function(response) {
+    this.setState({
+      userId: response.user.userId,
+      userName: response.user.name,
+      userName: response.user.name,
+      userImg: response.user.imgUrl
     });
   },
 
