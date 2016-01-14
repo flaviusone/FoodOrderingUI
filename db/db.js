@@ -44,6 +44,7 @@ var userSchema = mongoose.Schema ({
 	_id: {type: mongoose.Schema.Types.ObjectId, default: function () { return new mongoose.Types.ObjectId()}},
 	username: String,
 	name: String,
+	imgUrl: String,
 	orders: [{
 		_id: {type: mongoose.Schema.Types.ObjectId, default: function () { return new mongoose.Types.ObjectId()}},
 		name: String,
@@ -91,11 +92,12 @@ function addRestaurant (restaurant, cb)
 	});
 }
 
-function addUser (username, name, cb)
+function addUser (username, name, imgUrl, cb)
 {
 	var user  = new User ({
 		username: username,
 		name: name,
+		imgUrl: imgUrl,
 		orders: []
 	});
 

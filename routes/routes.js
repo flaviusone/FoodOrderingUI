@@ -20,7 +20,7 @@ var express = require('express'),
 // route for facebook authentication and login
 // different scopes while logging in
 router.get('/login',
-  passport.authenticate('facebook', { scope : 'email' }));
+  passport.authenticate('facebook', { scope: ['email', 'basic_info', 'user_photos'] }));
 
 router.get ('/login/facebook/callback', function (req, res, next){
   passport.authenticate ('facebook', {failureRedirect:'/login'},function (err, user, info){
@@ -39,7 +39,8 @@ router.get ('/login/facebook/callback', function (req, res, next){
 );
 
 router.get ('/get_user_info', function (req, res){
-  res.status(200). send({status: 'done', user: {name: req.user.name, userId: req. user.__id}});
+  res.status(200). send({status: 'done', user: {name: req.user.name, userId: req. user.__id,
+                                                  imgUrl = req.user.imgUrl}});
 });
 
 router.get ('/get_rooms', function(req, res) {
