@@ -98,7 +98,7 @@ module.exports = React.createClass({
 
   _getRooms: function() {
     if (this.state.data) {
-      return this.state.data.rooms;
+      return _.sortBy(this.state.data.rooms, 'name');
     } else {
       return null;
     }
