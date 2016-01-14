@@ -115,6 +115,7 @@ module.exports = React.createClass({
 
   onRoomJoin: function(roomId) {
     var data = {
+      oldRoom: this.state.roomId,
       roomId: roomId,
       userId: this.state.userId
     };
