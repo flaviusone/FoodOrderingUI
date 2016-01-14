@@ -1,0 +1,17 @@
+
+> FoodOrdering@1.0.0 start /home/ioana/FoodOrderingUI
+> DEBUG=food-server:* node devServer.js
+
+undefined
+webpack built 47dd26c17951a4dc69f1 in 7906ms
+undefined
+{ orders: [],
+  __v: 0,
+  name: 'undefined undefined',
+  username: '1018449618212300',
+  _id: 56968bb75f52e21b11b8c902 }
+undefined
+undefined
+undefined
+undefined
+undefined
