@@ -15,8 +15,8 @@ passport.deserializeUser(function (id, done) {
 });
 
 passport.use('facebook', new FacebookStrategy({
-  clientID        : '1720002968285873',
-  clientSecret    : 'c9fd63902ab5d170d2ade08ebe8324a6',
+  clientID        : '1111008928932197',
+  clientSecret    : 'a4a6fc8ba70280861bab9650df8dd6a1',
   callbackURL     : 'https://foodordering.herokuapp.com/login/facebook/callback',
   //profileFields   : ['id', 'name','photos', 'emails', 'username', 'displayName']
   },
