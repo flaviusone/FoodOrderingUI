@@ -18,7 +18,7 @@ module.exports = React.createClass({
       return {
         component: UserThumbnail,
         userName: userConfig.name,
-        avatar: require('../../assets/img/flavius.png'),
+        avatar: userConfig.imgUrl,
         orders: _.find(this.props.userOrders, function(userOrder) {
           return userOrder._id === userConfig._id;
         }).orders,

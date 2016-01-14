@@ -39,8 +39,9 @@ router.get ('/login/facebook/callback', function (req, res, next){
 );
 
 router.get ('/get_user_info', function (req, res){
-  res.status(200). send({status: 'done', user: {name: req.user.name, userId: req. user.__id,
-                                                  imgUrl = req.user.imgUrl}});
+  res.status(200). send({status: 'done', user: {name: req.user.name,
+                                                userId: req.user._id,
+                                                imgUrl: req.user.imgUrl}});
 });
 
 router.get ('/get_rooms', function(req, res) {
