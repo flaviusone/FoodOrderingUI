@@ -38,7 +38,7 @@ passport.use('facebook', new FacebookStrategy({
           return done (null, user); // user found, return that user
         else
         {
-          var imgUrl = 'http://graph.facebook.com/' + profile.id + '/picture';
+          var imgUrl = 'http://graph.facebook.com/' + profile.id + '/picture?width=300&height=300';
           db.addUser (profile.id, profile.displayName, imgUrl, function (err){
             if (err)
               return done (err)
